@@ -1,9 +1,11 @@
+# Disable bash history
+echo 'export HISTSIZE=0' >> ~/.bashrc
 # Update
 sudo pacman -Syyu
 
 # Install needed packages
 sudo pacman -S spice-vdagent pacman-contrib zip xdg-user-dirs xfce4-whiskermenu-plugin vlc gimp xcape gnome-keyring
-sudo pacman -S gnome-disk-utility baobab galculator p7zip catfish syncthing gpick chromium firefox gparted
+sudo pacman -S gnome-disk-utility baobab galculator p7zip catfish syncthing gpick chromium firefox gparted keepassxc
 
 # Install all of VLCs optional dependencies to fix fucked video playback -no kwallet
 sudo pacman -S pcsclite aribb25 aribb24 projectm libgoom2 lirc sdl_image libtiger libkate zvbi lua52-socket libmicrodns protobuf ttf-dejavu smbclient libmtp vcdimager libgme libva-intel-driver libva-vdpau-driver libdc1394
@@ -49,3 +51,5 @@ echo 'vm.swappiness = 200' >> /etc/sysctl.d/99-swappiness.conf
 # Dummy swap entry in fstab (hasn't been needed since RAM upgrade, also swapping on linux sucks and the system is very likely to hardlock/kill essential processes even at 200 swappiness)
 # echo '#Dummy swap partition entry with priority /dev/sdb2 none swap defaults,pri=99  0 0' >> /etc/fstab
 exit
+
+# TODO: Block chromium's internet access
