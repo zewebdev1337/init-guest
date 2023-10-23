@@ -1,5 +1,3 @@
-# Disable bash history
-echo 'export HISTSIZE=0' >> ~/.bashrc
 # Update
 sudo pacman -Syyu
 
@@ -9,7 +7,6 @@ sudo pacman -S spice-vdagent pacman-contrib zip xdg-user-dirs xfce4-whiskermenu-
 xdg-user-dirs-update
 
 # Enable Super key & TRIM
-xcape -e 'Super_L=Alt_L|F1'
 sudo systemctl enable --now fstrim.timer
 
 # Install yay
@@ -29,8 +26,6 @@ sudo rm -rf ~/.cache/yay/*
 
 # Operations that need to be performed as root
 su
-# Disable bash history
-echo 'export HISTSIZE=0' >> ~/.bashrc
 # Set swappiness
 echo 'vm.swappiness = 200' >> /etc/sysctl.d/99-swappiness.conf
 # Dummy swap entry in fstab (hasn't been needed since RAM upgrade, also swapping on linux sucks and the system is very likely to hardlock/kill essential processes even at 200 swappiness)
@@ -39,8 +34,7 @@ exit
 
 # Operations that need to performed as 'user'
 su - user
-# Disable bash history
-echo 'export HISTSIZE=0' >> ~/.bashrc
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 # Enable Syncthing
 systemctl enable --now syncthing.service --user
 #Set and start nvm
