@@ -4,12 +4,7 @@ echo 'export HISTSIZE=0' >> ~/.bashrc
 sudo pacman -Syyu
 
 # Install needed packages
-sudo pacman -S spice-vdagent pacman-contrib zip xdg-user-dirs xfce4-whiskermenu-plugin vlc gimp xcape gnome-keyring telegram-desktop
-sudo pacman -S gnome-disk-utility baobab galculator p7zip catfish syncthing gpick chromium firefox gparted keepassxc gpa
-
-# Install all of VLCs optional dependencies to fix fucked video playback -no kwallet
-sudo pacman -S pcsclite aribb25 aribb24 projectm libgoom2 lirc sdl_image libtiger libkate zvbi lua52-socket libmicrodns protobuf ttf-dejavu smbclient libmtp vcdimager libgme libva-intel-driver libva-vdpau-driver libdc1394
-
+sudo pacman -S spice-vdagent pacman-contrib zip xdg-user-dirs xfce4-whiskermenu-plugin vlc gimp telegram-desktop gnome-disk-utility baobab galculator p7zip catfish syncthing gpick chromium firefox gparted keepassxc gpa gvfs-smb pcsclite aribb25 aribb24 projectm libgoom2 lirc sdl_image libtiger libkate zvbi lua52-socket libmicrodns protobuf ttf-dejavu smbclient libmtp vcdimager libgme libva-intel-driver libva-vdpau-driver libdc1394 libwmf libopenraw libavif libheif libjxl librsvg webp-pixbuf-loader
 # Create user folders
 xdg-user-dirs-update
 
@@ -57,6 +52,6 @@ nvm install 18
 git config --global user.name "zewebdev1337"
 # Get email
 keepassxc &
+firefox http://localhost:8384 &
 firefox https://github.com/settings/emails &
 # git config --global user.email "secretgithubemail@users.noreply.github.com"
-
