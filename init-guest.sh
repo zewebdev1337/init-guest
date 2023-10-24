@@ -1,4 +1,11 @@
+#########################################################
+#                         ADMIN                         #
+#########################################################
+ 
+# Switch to admin account
 su - admin
+ 
+# Once in admin acct:
 # Update
 sudo pacman -Syyu
 
@@ -20,7 +27,11 @@ yay -S visual-studio-code-bin nvm dockbarx xfce4-dockbarx-plugin
 sudo paccache -rk0
 sudo rm -rf ~/.cache/yay/*
 
-# Operations that need to be performed as root
+#########################################################
+#                          ROOT                         #
+#########################################################
+
+# Switch to root for operations that can only be done as root
 su
 # Set swappiness
 echo 'vm.swappiness = 200' >> /etc/sysctl.d/99-swappiness.conf
@@ -28,11 +39,18 @@ echo 'vm.swappiness = 200' >> /etc/sysctl.d/99-swappiness.conf
 # echo '#Dummy swap partition entry with priority /dev/sdb2 none swap defaults,pri=99  0 0' >> /etc/fstab
 exit
 
-# Operations that need to performed as 'user'
+ 
+#########################################################
+#                          USER                         #
+#########################################################
+ 
+# Switch to user for operations that need to be done as non-sudo user
+ 
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 xfconf-query -c xsettings -p /Net/ThemeName -s "Adwaita-dark"
 xfconf-query -c xfwm4 -p /general/theme -s Crux
 xfconf-query -c xfwm4 -p /general/easy_click -s none
+#echo "xcape -e 'Super_L=Alt_L|F1'" >> ~/.bashrc
 # Enable Syncthing
 systemctl enable --now syncthing.service --user
 #Set and start nvm
