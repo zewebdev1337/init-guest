@@ -1,13 +1,9 @@
+su - admin
 # Update
 sudo pacman -Syyu
 
 # Install needed packages
-sudo pacman -S spice-vdagent pacman-contrib zip xdg-user-dirs xfce4-whiskermenu-plugin vlc gimp telegram-desktop gnome-disk-utility baobab galculator p7zip catfish syncthing gpick chromium firefox gparted keepassxc gpa gvfs-smb pcsclite aribb25 aribb24 projectm libgoom2 lirc sdl_image libtiger libkate zvbi lua52-socket libmicrodns protobuf ttf-dejavu smbclient libmtp vcdimager libgme libva-intel-driver libva-vdpau-driver libdc1394 libwmf libopenraw libavif libheif libjxl librsvg webp-pixbuf-loader
-# Create user folders
-xdg-user-dirs-update
-
-# Enable Super key & TRIM
-sudo systemctl enable --now fstrim.timer
+sudo pacman -S spice-vdagent pacman-contrib zip xdg-user-dirs xfce4-whiskermenu-plugin vlc gimp telegram-desktop gnome-disk-utility baobab galculator p7zip catfish syncthing gpick chromium firefox gparted keepassxc gpa gvfs-smb pcsclite aribb25 aribb24 projectm libgoom2 lirc sdl_image libtiger libkate zvbi lua52-socket libmicrodns protobuf ttf-dejavu smbclient libmtp vcdimager libgme libva-intel-driver libva-vdpau-driver libdc1394 libwmf libopenraw libavif libheif libjxl librsvg webp-pixbuf-loader imagemagick
 
 # Install yay
 git clone https://aur.archlinux.org/yay-bin.git
@@ -18,7 +14,7 @@ cd ..
 sudo rm -rf ./yay-bin
 
 # Install needed AUR packages
-yay -S visual-studio-code-bin nvm
+yay -S visual-studio-code-bin nvm dockbarx xfce4-dockbarx-plugin 
 
 # Clean pacman & yay caches
 sudo paccache -rk0
@@ -33,15 +29,17 @@ echo 'vm.swappiness = 200' >> /etc/sysctl.d/99-swappiness.conf
 exit
 
 # Operations that need to performed as 'user'
-su - user
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+xfconf-query -c xsettings -p /Net/ThemeName -s "Adwaita-dark"
+xfconf-query -c xfwm4 -p /general/theme -s Crux
+xfconf-query -c xfwm4 -p /general/easy_click -s none
 # Enable Syncthing
 systemctl enable --now syncthing.service --user
 #Set and start nvm
 echo 'source /usr/share/nvm/init-nvm.sh' >> ~/.bashrc
 source /usr/share/nvm/init-nvm.sh
 #Install Node.js LTS
-nvm install 18
+nvm install 20
 # Set needed git variables
 git config --global user.name "zewebdev1337"
 # Get email
