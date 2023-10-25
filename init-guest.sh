@@ -27,6 +27,8 @@ yay -S visual-studio-code-bin nvm dockbarx xfce4-dockbarx-plugin
 sudo paccache -rk0
 sudo rm -rf ~/.cache/yay/*
 
+exit 
+
 #########################################################
 #                          ROOT                         #
 #########################################################
