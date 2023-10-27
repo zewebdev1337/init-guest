@@ -11,6 +11,7 @@ sudo pacman -Syyu
 
 # Install needed packages
 sudo pacman -S spice-vdagent qemu-guest-agent git pacman-contrib zip xdg-user-dirs xfce4-whiskermenu-plugin vlc gimp telegram-desktop gnome-disk-utility baobab galculator p7zip catfish syncthing gpick chromium firefox gparted keepassxc gpa gvfs-smb pcsclite aribb25 aribb24 projectm libgoom2 lirc sdl_image libtiger libkate zvbi lua52-socket libmicrodns protobuf ttf-dejavu smbclient libmtp vcdimager libgme libva-intel-driver libva-vdpau-driver libdc1394 libwmf libopenraw libavif libheif libjxl librsvg webp-pixbuf-loader imagemagick gnome-keyring
+# gnome keyring bug all through October 2023: whichever user profile logins first (maybe it's first profile to launch chromium but I lean more towards first login. It's been a pain in the ass, so not a lot of willingness to test further left in me) after first boot is the only one able to use the keyring, further, the accounts that can't use the keyring can't open chromium as it crashes on boot after the GPU error message (this GPU error shows regularly, even when it boots without issues but it logs more stuff past that point when it does. On bugged accounts it stops at the GPU error). Uninstalling gnome-keyring doesn't fix the issue. If gnome-keyring is not installed, all users can boot chromium up
 
 # Install yay
 git clone https://aur.archlinux.org/yay-bin.git
