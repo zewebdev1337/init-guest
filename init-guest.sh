@@ -38,8 +38,6 @@ exit
 su
 # Set swappiness
 echo 'vm.swappiness = 200' >> /etc/sysctl.d/99-swappiness.conf
-# Dummy swap entry in fstab (hasn't been needed since RAM upgrade, also swapping on linux sucks and the system is very likely to hardlock/kill essential processes even at 200 swappiness)
-# echo '#Dummy swap partition entry with priority /dev/sdb2 none swap defaults,pri=99  0 0' >> /etc/fstab
 exit
 
  
@@ -55,6 +53,7 @@ xfconf-query -c xfwm4 -p /general/theme -s Crux
 xfconf-query -c xfwm4 -p /general/easy_click -s none
 alias audit='audit --omit=dev'
 #echo "xcape -e 'Super_L=Alt_L|F1'" >> ~/.bashrc
+# TODO: Check if xcape is fixed. it triggers multiple Alt+F1 inputs in quick succession as opposed to a single input as of lately. getting used to using Alt+F1 tho.
 # Enable Syncthing
 systemctl enable --now syncthing.service --user
 #Set and start nvm
