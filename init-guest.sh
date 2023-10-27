@@ -5,7 +5,6 @@
 # Switch to admin account
 su - admin
  
-# Once in admin acct:
 # Update
 sudo pacman -Syyu
 
@@ -18,7 +17,6 @@ git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin
 makepkg -si
 cd ..
-# Remove yay's source folder
 sudo rm -rf ./yay-bin
 
 # Install needed AUR packages
