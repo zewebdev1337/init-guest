@@ -52,6 +52,7 @@ gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 xfconf-query -c xsettings -p /Net/ThemeName -s "Adwaita-dark"
 xfconf-query -c xfwm4 -p /general/theme -s Crux
 xfconf-query -c xfwm4 -p /general/easy_click -s none
+alias audit='audit --omit=dev'
 #echo "xcape -e 'Super_L=Alt_L|F1'" >> ~/.bashrc
 # Enable Syncthing
 systemctl enable --now syncthing.service --user
@@ -66,4 +67,5 @@ git config --global user.name "zewebdev1337"
 keepassxc &
 firefox http://localhost:8384 &
 firefox https://github.com/settings/emails &
+
 # git config --global user.email "secretgithubemail@users.noreply.github.com"
