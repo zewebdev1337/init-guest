@@ -37,6 +37,7 @@ su
 # Set swappiness
 echo 'vm.swappiness = 200' >> /etc/sysctl.d/99-swappiness.conf
 
+# Create folder thumbnailer
 echo '#!/bin/bash
  
 convert -thumbnail "$1" "$2/folder.jpg" "$3" 1>/dev/null 2>&1 ||\
@@ -46,7 +47,6 @@ rm -f "$HOME/.thumbnails/normal/$(echo -n "$4" | md5sum | cut -d " " -f1).png" |
 rm -f "$HOME/.cache/thumbnails/large/$(echo -n "$4" | md5sum | cut -d " " -f1).png" ||\
 rm -f "$HOME/.thumbnails/large/$(echo -n "$4" | md5sum | cut -d " " -f1).png" ||\
 exit 1' >> /usr/bin/folder-thumbnailer
-
 echo '[Thumbnailer Entry]
 Version=1.0
 Encoding=UTF-8
@@ -54,6 +54,10 @@ Type=X-Thumbnailer
 Name=Folder Thumbnailer
 MimeType=inode/directory;
 Exec=/usr/bin/folder-thumbnailer %s %i %o %u' >> /usr/share/thumbnailers/folder.thumbnailer
+
+# Mark folder thumbnailer as executable
+chmod +x /usr/bin/folder-thumbnailer
+chmod +x /usr/share/thumbnailers/folder.thumbnailer
 
 exit
 
