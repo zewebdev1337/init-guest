@@ -79,6 +79,7 @@ source /usr/share/nvm/init-nvm.sh
 #Install Node.js LTS
 nvm install 20
 # Set needed git variables
+git config --global init.defaultBranch "main"
 git config --global user.name "zewebdev1337"
 # Get email
 keepassxc &
