@@ -74,6 +74,7 @@ xfconf-query -c xfwm4 -p /general/theme -s Crux
 xfconf-query -c xfwm4 -p /general/easy_click -s none
 echo "alias npm='npm '" >> ~/.bashrc
 echo "alias audit='audit --omit=dev'" >> ~/.bashrc
+echo "alias indexupd='react-index-updater & svelte-index-updater & js-index-updater'" >> ~/.bashrc
 #echo "xcape -e 'Super_L=Alt_L|F1'" >> ~/.bashrc
 # TODO: Check if xcape is fixed. it triggers multiple Alt+F1 inputs in quick succession as opposed to a single input as of lately. getting used to using Alt+F1 tho.
 # Enable Syncthing
@@ -83,6 +84,7 @@ echo 'source /usr/share/nvm/init-nvm.sh' >> ~/.bashrc
 source /usr/share/nvm/init-nvm.sh
 #Install Node.js LTS
 nvm install 20
+npm install --global @zewebdev/react-index-updater @zewebdev/svelte-index-updater @zewebdev/js-index-updater
 # Set needed git variables
 git config --global init.defaultBranch "main"
 git config --global user.name "zewebdev1337"
