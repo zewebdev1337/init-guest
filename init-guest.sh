@@ -72,7 +72,8 @@ gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 xfconf-query -c xsettings -p /Net/ThemeName -s "Adwaita-dark"
 xfconf-query -c xfwm4 -p /general/theme -s Crux
 xfconf-query -c xfwm4 -p /general/easy_click -s none
-alias audit='audit --omit=dev'
+echo "alias npm='npm '" >> ~/.bashrc
+echo "alias audit='audit --omit=dev'" >> ~/.bashrc
 #echo "xcape -e 'Super_L=Alt_L|F1'" >> ~/.bashrc
 # TODO: Check if xcape is fixed. it triggers multiple Alt+F1 inputs in quick succession as opposed to a single input as of lately. getting used to using Alt+F1 tho.
 # Enable Syncthing
