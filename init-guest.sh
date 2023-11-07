@@ -9,9 +9,7 @@ su - admin
 sudo pacman -Syyu
 
 # Install needed packages
-sudo pacman -S spice-vdagent qemu-guest-agent git pacman-contrib zip xdg-user-dirs xfce4-whiskermenu-plugin vlc gimp gnome-disk-utility baobab galculator p7zip catfish syncthing gpick chromium gparted keepassxc gpa gvfs-smb pcsclite aribb25 aribb24 projectm libgoom2 lirc sdl_image libtiger libkate zvbi lua52-socket libmicrodns protobuf ttf-dejavu smbclient libmtp vcdimager libgme libva-intel-driver libva-vdpau-driver libdc1394 libwmf libopenraw libavif libheif libjxl librsvg webp-pixbuf-loader imagemagick gnome-keyring gcc dotnet-sdk gdb clang go json-c xorg-server-devel libxcursor libxrandr libxinerama libxi mingw-w64-gcc docker clang make cmake patch texinfo flex bison gettext wget gsl gmp mpfr libmpc libusb readline libarchive gpgme bash openssl libtool libusb-compat python-pip boost python libvorbis rsync glfw-x11 unzip ninja p7zip gnome-keyring" xdg-user-dir 
-
-# gnome keyring bug all through October 2023: whichever user profile logins first (maybe it's first profile to launch chromium but I lean more towards first login. It's been a pain in the ass, so not a lot of willingness to test further left in me) after first boot is the only one able to use the keyring, further, the accounts that can't use the keyring can't open chromium as it crashes on boot after the GPU error message (this GPU error shows regularly, even when it boots without issues but it logs more stuff past that point when it does. On bugged accounts it stops at the GPU error). Uninstalling gnome-keyring doesn't fix the issue. If gnome-keyring is not installed, all users can boot chromium up
+sudo pacman -S pacman-contrib reflector smbclient lsof git expect
 
 # Install yay
 git clone https://aur.archlinux.org/yay-bin.git
@@ -21,7 +19,7 @@ cd ..
 sudo rm -rf ./yay-bin
 
 # Install needed AUR packages
-yay -S visual-studio-code-bin nvm dockbarx xfce4-dockbarx-plugin 
+yay -S plex-media-server
 
 # Clean pacman & yay caches
 sudo paccache -rk0
@@ -38,56 +36,96 @@ su
 # Set swappiness
 echo 'vm.swappiness = 200' >> /etc/sysctl.d/99-swappiness.conf
 
-# Create folder thumbnailer
-echo '#!/bin/bash
- 
-convert -thumbnail "$1" "$2/folder.jpg" "$3" 1>/dev/null 2>&1 ||\
-convert -thumbnail "$1" "$2/.folder.jpg" "$3" 1>/dev/null 2>&1 ||\
-rm -f "$HOME/.cache/thumbnails/normal/$(echo -n "$4" | md5sum | cut -d " " -f1).png" ||\
-rm -f "$HOME/.thumbnails/normal/$(echo -n "$4" | md5sum | cut -d " " -f1).png" ||\
-rm -f "$HOME/.cache/thumbnails/large/$(echo -n "$4" | md5sum | cut -d " " -f1).png" ||\
-rm -f "$HOME/.thumbnails/large/$(echo -n "$4" | md5sum | cut -d " " -f1).png" ||\
-exit 1' >> /usr/bin/folder-thumbnailer
+# Add required network shares to fstab
+echo '//master/server           /server         cifs    rw,_netdev,uid=1000,iocharset=utf8,password=guest   0 0
+//master/warez            /media/root     cifs    rw,_netdev,uid=1000,iocharset=utf8,password=guest   0 0
+//master/media-2tb        /media/2tb      cifs    rw,_netdev,uid=1000,iocharset=utf8,password=guest   0 0
+//master/media-500g       /media/500g     cifs    rw,_netdev,uid=1000,iocharset=utf8,password=guest   0 0
+//master/media-samsung    /media/samsung  cifs    rw,_netdev,uid=1000,iocharset=utf8,password=guest   0 0
+//master/media-timetec    /media/timetec  cifs    rw,_netdev,uid=1000,iocharset=utf8,password=guest   0 0
+//master/media-micron     /media/micron   cifs    rw,_netdev,uid=1000,iocharset=utf8,password=guest   0 0' >> /etc/fstab
 
-echo '[Thumbnailer Entry]
-Version=1.0
-Encoding=UTF-8
-Type=X-Thumbnailer
-Name=Folder Thumbnailer
-MimeType=inode/directory;
-Exec=/usr/bin/folder-thumbnailer %s %i %o %u' >> /usr/share/thumbnailers/folder.thumbnailer
+# Autologin as user
+mkdir /etc/systemd/system/getty@tty1.service.d/
+touch /etc/systemd/system/getty@tty1.service.d/override.conf
+echo '[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --autologin user --noclear %1 $TERM' >> /etc/systemd/system/getty@tty1.service.d/override.conf
 
-# Mark folder thumbnailer as executable
-chmod +x /usr/bin/folder-thumbnailer
-chmod +x /usr/share/thumbnailers/folder.thumbnailer
+# Set static IP Address
+rm -rf /etc/systemd/network/20-ethernet.network
+echo '[Match]
+# Matching with "Type=ether" causes issues with containers because it also matches virtual Ethernet interfaces (veth*).
+# See https://bugs.archlinux.org/task/70892
+# Instead match by globbing the network interface name.
+Name=en*
+Name=eth*
+
+[Network]
+DHCP=no
+# FOR BRIDGE CONNECTION: Address=192.168.100.250/24
+Address=192.168.122.50/24
+Gateway=192.168.122.1
+IPv6PrivacyExtensions=yes
+
+# systemd-networkd does not set per-interface-type default route metrics
+# https://github.com/systemd/systemd/issues/17698
+# Explicitly set route metric, so that Ethernet is preferred over Wi-Fi and Wi-Fi is preferred over mobile broadband.
+# Use values from NetworkManager. From nm_device_get_route_metric_default in
+# https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/blob/main/src/core/devices/nm-device.c
+[DHCPv4]
+RouteMetric=100
+
+[IPv6AcceptRA]
+RouteMetric=100' >> /etc/systemd/network/20-ethernet.network
+
+# Check https://wiki.archlinux.org/title/plex and verify if ssh tunnel is required or no
+
+# Share watcher/remounter script
+echo '#!/usr/bin/expect
+
+set DRIVE_PATH "/media/500g/"
+set TEST_PATH "/media/500g/Music/"
+
+while {1} {
+    if([file exists $TEST_PATH]){
+        puts "$TEST_PATH found, drive is mounted."
+    } else {
+        puts "$TEST_PATH not found, remounting drive..."
+        spawn umount $DRIVE_PATH
+        expect eof
+
+        spawn mount -a
+        expect eof
+    }
+    sleep 10
+}' >> /smb.sh
+chmod +x /smb.sh
+
+# Share watcher/remounter service
+echo '[Unit]
+Description=Periodically check and remount SMB share(s) if necessary.
+After=network.target
+
+[Service]
+ExecStart=/bin/bash /smb.sh
+Restart=always
+
+[Install]
+WantedBy=default.target' >> /etc/systemd/system/smb-remounter.service
+
+systemctl enable --now smb-remounter.service
 
 exit
 
- 
 #########################################################
 #                          USER                         #
 #########################################################
  
 # Switch to user for operations that need to be done as non-sudo user
- 
-gsettings set org.gnome.desktop.interface color-scheme prefer-dark
-xfconf-query -c xsettings -p /Net/ThemeName -s "Adwaita-dark"
-xfconf-query -c xfwm4 -p /general/theme -s Redmond-XP
-xfconf-query -c xfwm4 -p /general/easy_click -s none
-#echo "xcape -e 'Super_L=Alt_L|F1'" >> ~/.bashrc
-# TODO: Check if xcape is fixed. it triggers multiple Alt+F1 inputs in quick succession as opposed to a single input as of lately. getting used to using Alt+F1 tho.
-# Enable Syncthing
-systemctl enable --now syncthing.service --user
 
-# Set needed git variables
-git config --global init.defaultBranch "main"
-# git config --global user.name "zewebdev1337"
-# Get email
-keepassxc &
-firefox http://localhost:8384 &
-firefox https://github.com/settings/emails &
-
-# git config --global user.email "secretgithubemail@users.noreply.github.com"
+systemctl enable --now plexmediaserver.service
+systemctl enable --now nginx.service
 
 #########################################################
 #                          UTIL                         #
