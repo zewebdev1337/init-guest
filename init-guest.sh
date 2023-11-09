@@ -89,16 +89,16 @@ set TEST_PATH "/media/500g/Music/"
 
 while {1} {
     if([file exists $TEST_PATH]){
-        puts "$TEST_PATH found, drive is mounted."
+        puts "$TEST_PATH found and accessible. Drive is mounted."
     } else {
-        puts "$TEST_PATH not found, remounting drive..."
-        spawn umount $DRIVE_PATH
+        puts "$TEST_PATH not found. Remounting drive..."
+        spawn sudo umount $DRIVE_PATH
         expect eof
 
-        spawn mount -a
+        spawn sudo mount -a
         expect eof
     }
-    sleep 10
+    sleep 4
 }' >> /smb.sh
 chmod +x /smb.sh
 
@@ -108,7 +108,7 @@ Description=Periodically check and remount SMB share(s) if necessary.
 After=network.target
 
 [Service]
-ExecStart=/bin/bash /smb.sh
+ExecStart=/usr/bin/expect /smb.sh
 Restart=always
 
 [Install]
