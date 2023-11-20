@@ -9,7 +9,7 @@ su - admin
 sudo pacman -Syyu
 
 # Install needed packages
-sudo pacman -S spice-vdagent qemu-guest-agent git pacman-contrib zip xdg-user-dirs xfce4-whiskermenu-plugin vlc gimp telegram-desktop gnome-disk-utility baobab galculator p7zip catfish syncthing gpick chromium firefox gparted keepassxc gpa gvfs-smb pcsclite aribb25 aribb24 projectm libgoom2 lirc sdl_image libtiger libkate zvbi lua52-socket libmicrodns protobuf ttf-dejavu smbclient libmtp vcdimager libgme libva-intel-driver libva-vdpau-driver libdc1394 libwmf libopenraw libavif libheif libjxl librsvg webp-pixbuf-loader imagemagick reflector docker
+sudo pacman -S spice-vdagent qemu-guest-agent git pacman-contrib zip xdg-user-dirs xfce4-whiskermenu-plugin vlc gimp telegram-desktop gnome-disk-utility baobab galculator p7zip catfish syncthing gpick chromium firefox gparted keepassxc gpa gvfs-smb pcsclite aribb25 aribb24 projectm libgoom2 lirc sdl_image libtiger libkate zvbi lua52-socket libmicrodns protobuf ttf-dejavu smbclient libmtp vcdimager libgme libva-intel-driver libva-vdpau-driver libdc1394 libwmf libopenraw libavif libheif libjxl librsvg webp-pixbuf-loader imagemagick reflector docker vultr-cli github-cli
 
 ## INSTALL AFTER EVERYTHING
 sudo pacman -S gnome-keyring 
@@ -93,7 +93,8 @@ source /usr/share/nvm/init-nvm.sh
 # Install Node.js LTS
 nvm install 20
 # Install index updaters
-npm install --global @zewebdev/react-index-updater @zewebdev/svelte-index-updater @zewebdev/js-index-updater
+npm install --global @zewebdev/react-index-updater @zewebdev/svelte-index-updater web-ext
+# @zewebdev/js-index-updater 
 # Set needed git variables
 git config --global init.defaultBranch "main"
 git config --global user.name "zewebdev1337"
