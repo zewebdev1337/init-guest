@@ -21,7 +21,7 @@ cd ..
 sudo rm -rf ./yay-bin
 
 # Install needed AUR packages
-yay -S visual-studio-code-bin nvm dockbarx xfce4-dockbarx-plugin vercel syncthingtray act
+yay -S visual-studio-code-bin nvm dockbarx xfce4-dockbarx-plugin vercel syncthingtray act noto-fonts-emoji
 
 
 # gnome-keyring
@@ -125,6 +125,18 @@ keepassxc &
 syncthingtray &
 # git config --global user.email "secretgithubemail@users.noreply.github.com"
 
+# Enable emoji support 🤗
+
+mkdir -p ~/.config/fontconfig/conf.d
+echo '<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <!-- Use Google Emojis -->
+  <match target="pattern">
+    <test qual="any" name="family"><string>Segoe UI Emoji</string></test>
+    <edit name="family" mode="assign" binding="same"><string>Noto Color Emoji</string></edit>
+  </match>
+</fontconfig>' >> ~/.config/fontconfig/conf.d/01-emoji.conf
 
 #########################################################
 #                          UTIL                         #
