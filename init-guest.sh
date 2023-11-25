@@ -88,19 +88,23 @@ exit
  
 # Switch to user for operations that need to be done as non-sudo user
  
+# Bash
+
+echo 'HISTFILESIZE=10000
+HISTSIZE=10000
+shopt -s histappend
+PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+HISTTIMEFORMAT="%F %T "' >> ~/.bashrc
+echo 'export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_git_ed25519 -o IdentitiesOnly=yes"' >> ~/.bashrc
+echo 'alias index-updater="react-index-updater & svelte-index-updater & js-index-updater"' >> ~/.bashrc
+echo 'alias vultr-inst="vultr-cli instance list"' >> ~/.bashrc
+
 # Desktop Environment Settings
 
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 xfconf-query -c xsettings -p /Net/ThemeName -s "Adwaita-dark"
 xfconf-query -c xfwm4 -p /general/theme -s Crux
 xfconf-query -c xfwm4 -p /general/easy_click -s none
-
-# Aliasing
-
-echo "alias npm='npm '" >> ~/.bashrc
-echo "alias audit='audit --omit=dev'" >> ~/.bashrc
-echo "alias indexupd='react-index-updater & svelte-index-updater & js-index-updater'" >> ~/.bashrc
-#echo "xcape -e 'Super_L=Alt_L|F1'" >> ~/.bashrc # TODO: Check if xcape is fixed. it triggers multiple Alt+F1 inputs in quick succession as opposed to a single input as of lately. getting used to using Alt+F1 tho.
 
 # Enable Syncthing
 systemctl enable --now syncthing.service --user
@@ -109,7 +113,9 @@ systemctl enable --now docker.socket
 #systemctl enable --now docker.service
 
 # Setup and start nvm
-echo 'source /usr/share/nvm/init-nvm.sh' >> ~/.bashrc
+echo '
+source /usr/share/nvm/init-nvm.sh
+' >> ~/.bashrc
 source /usr/share/nvm/init-nvm.sh
 
 # Install Node.js LTS
