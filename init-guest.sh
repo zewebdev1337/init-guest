@@ -47,7 +47,7 @@ exit
 su
 
 # Enable based downloads
-sudo sed -i '/#ParallelDownloads/s/^#//;s/=.*/= 32/' /etc/pacman.conf
+sed -i '/^#ParallelDownloads/s/^#//; /^ParallelDownloads/s/=.*/= 32/' /etc/pacman.conf
 
 # Set swappiness
 echo 'vm.swappiness = 200' >> /etc/sysctl.d/99-swappiness.conf
@@ -126,7 +126,6 @@ syncthingtray &
 # git config --global user.email "secretgithubemail@users.noreply.github.com"
 
 # Enable emoji support 🤗
-
 mkdir -p ~/.config/fontconfig/conf.d
 echo '<?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
