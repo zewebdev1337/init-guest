@@ -92,12 +92,13 @@ exit
 
 echo 'HISTFILESIZE=10000
 HISTSIZE=10000
-shopt -s histappend
+HISTTIMEFORMAT="%F %T "
 PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
-HISTTIMEFORMAT="%F %T "' >> ~/.bashrc
-echo 'export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_git_ed25519 -o IdentitiesOnly=yes"' >> ~/.bashrc
+shopt -s histappend
+' >> ~/.bashrc
 echo 'alias index-updater="react-index-updater & svelte-index-updater & js-index-updater"' >> ~/.bashrc
 echo 'alias vultr-inst="vultr-cli instance list"' >> ~/.bashrc
+echo 'export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_git_ed25519 -o IdentitiesOnly=yes"' >> ~/.bashrc
 
 # Desktop Environment Settings
 
