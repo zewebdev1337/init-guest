@@ -46,6 +46,9 @@ exit
 # Switch to root for operations that can only be done as root
 su
 
+# Enable based downloads
+sudo sed -i '/#ParallelDownloads/s/^#//;s/=.*/= 32/' /etc/pacman.conf
+
 # Set swappiness
 echo 'vm.swappiness = 200' >> /etc/sysctl.d/99-swappiness.conf
 
